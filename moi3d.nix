@@ -98,7 +98,14 @@ in
 
     # mkdir -p "$config_dir"
 
+    # WINEPREFIX=$HOME/.wineprefixes/mol3d sh winetricks -q corefonts cjkfonts msxml4 msxml6 vcrun2017 fontsmooth=rgb win8 &&
+    # We must install cjkfonts again then sometimes it doesn't work the first time!
+
     winAppInstall = ''
+      winetricks -q corefonts cjkfonts msxml4 msxml6 vcrun2017 fontsmooth=rgb win8 &&
+
+      winetricks -q cjkfonts
+
       $WINE ${src} /S
       regedit ${txtReg}
     '';
