@@ -90,14 +90,16 @@ in
     # invalidate the app layer.
     # WINEPREFIX, WINEARCH, AND WINEDLLOVERRIDES are set
     # and wine, winetricks, and cabextract are in the environment.
+    # d="$WINEPREFIX/drive_c/${pname}"
+    # config_dir="$HOME/.config/moi3d"
+
+    # mkdir -p "$d"
+    # unzip ${src} -d "$d"
+
+    # mkdir -p "$config_dir"
+
     winAppInstall = ''
-      d="$WINEPREFIX/drive_c/${pname}"
-      config_dir="$HOME/.config/moi3d"
-
-      mkdir -p "$d"
-      unzip ${src} -d "$d"
-
-      mkdir -p "$config_dir"
+      $WINE ${src} /S
       regedit ${txtReg}
     '';
     # cp -v -n "${defaultSettings}" "$config_dir/SumatraPDF-settings.txt"
