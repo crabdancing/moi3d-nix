@@ -66,7 +66,8 @@ in
     fileMapDuringAppInstall = false;
 
     # By default `mkWindowsApp` doesn't persist registry changes made during runtime. Therefore, if an app uses the registry then set this to "true". The registry files are saved to `$HOME/.local/share/mkWindowsApp/$pname/`.
-    persistRegistry = false;
+    # persistRegistry = false;
+    persistRegistry = true;
 
     # By default mkWindowsApp creates ephemeral (temporary) WINEPREFIX(es).
     # Setting persistRuntimeLayer to true causes mkWindowsApp to retain the WINEPREFIX, for the short term.
