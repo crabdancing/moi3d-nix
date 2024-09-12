@@ -52,18 +52,17 @@ in
     # To figure out what needs to be persisted, take at look at $(dirname $WINEPREFIX)/upper,
     # while the app is running.
     fileMap = {
-      "$HOME/.cache/${pname}" = "drive_c/${pname}/${pname}cache";
-      "$HOME/Desktop" = "drive_c/Users/$USER";
+      # "$HOME/.cache/${pname}" = "drive_c/${pname}/${pname}cache";
+      "$HOME/Desktop" = "drive_c/Users/$USER/Desktop";
       # "$HOME/.local/share/mkWindowsApp/${pname}/AppData" = "drive_c/users/$USER/AppData";
-      "$HOME/Documents" = "drive_c/Users/$Documents";
+      "$HOME/Documents" = "drive_c/Users/$USER/$Documents";
     };
 
     # By default, `fileMap` is applied right before running the app and is cleaned up after the app terminates. If the following option is set to "true", then `fileMap` is also applied prior to `winAppInstall`. This is set to "false" by default.
     fileMapDuringAppInstall = false;
 
     # By default `mkWindowsApp` doesn't persist registry changes made during runtime. Therefore, if an app uses the registry then set this to "true". The registry files are saved to `$HOME/.local/share/mkWindowsApp/$pname/`.
-    # persistRegistry = false;
-    persistRegistry = true;
+    persistRegistry = false;
 
     # By default mkWindowsApp creates ephemeral (temporary) WINEPREFIX(es).
     # Setting persistRuntimeLayer to true causes mkWindowsApp to retain the WINEPREFIX, for the short term.
