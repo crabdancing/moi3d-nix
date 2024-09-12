@@ -52,9 +52,7 @@ in
     # To figure out what needs to be persisted, take at look at $(dirname $WINEPREFIX)/upper,
     # while the app is running.
     fileMap = {
-      # "$HOME/.cache/${pname}" = "drive_c/${pname}/${pname}cache";
       "$HOME/Desktop" = "drive_c/Users/$USER/Desktop";
-      # "$HOME/.local/share/mkWindowsApp/${pname}/AppData" = "drive_c/users/$USER/AppData";
       "$HOME/Documents" = "drive_c/Users/$USER/$Documents";
     };
 
