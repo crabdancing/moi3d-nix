@@ -10,9 +10,6 @@
   copyDesktopIcons, # This comes with erosanix. It's a handy way to generate desktop icons.
   unzip,
 }: let
-  # The default settings used if user doesn't already have a settings file.
-  # Tabs are disabled because they lead to UI issues when using Wine.
-  # defaultSettings = ./SumatraPDF-settings.txt;
   # This registry file sets winebrowser (xdg-open) as the default handler for
   # text files, instead of Wine's notepad.
   # Selecting "Settings -> Advanced Options" should then use xdg-open to open the SumatraPDF config file.
@@ -26,9 +23,6 @@ in
 
     src = builtins.fetchurl {
       url = "https://moi3d.com/4.0/trial/moi_v4_trial_setup.exe";
-      # sha256 = "sha256:1299a6n4m13a22sig53dmlz3nf3pr1q9kfyz49lcwk8qr6av7k36";
-      # hash = lib.fakeHash;
-      # sha256 = lib.fakeHash;
       sha256 = "sha256:19vf1lnpjw5nn7xdapjzaw1ns9zpaqsyz3wgzml5iccx9m1445rx";
     };
 
@@ -58,8 +52,10 @@ in
     # To figure out what needs to be persisted, take at look at $(dirname $WINEPREFIX)/upper,
     # while the app is running.
     fileMap = {
-      # "$HOME/.config/${pname}/SumatraPDF-settings.txt" = "drive_c/${pname}/SumatraPDF-settings.txt";
       "$HOME/.cache/${pname}" = "drive_c/${pname}/${pname}cache";
+      "$HOME/Desktop" = "drive_c/Users/$USER";
+      # "$HOME/.local/share/mkWindowsApp/${pname}/AppData" = "drive_c/users/$USER/AppData";
+      "$HOME/Documents" = "drive_c/Users/$Documents";
     };
 
     # By default, `fileMap` is applied right before running the app and is cleaned up after the app terminates. If the following option is set to "true", then `fileMap` is also applied prior to `winAppInstall`. This is set to "false" by default.
@@ -100,11 +96,9 @@ in
 
     # WINEPREFIX=$HOME/.wineprefixes/mol3d sh winetricks -q corefonts cjkfonts msxml4 msxml6 vcrun2017 fontsmooth=rgb win8 &&
     # We must install cjkfonts again then sometimes it doesn't work the first time!
-
+    # winetricks -q corefonts cjkfonts msxml4 msxml6 vcrun2017 fontsmooth=rgb win8 &&
+    # winetricks -q cjkfonts
     winAppInstall = ''
-      winetricks -q corefonts cjkfonts msxml4 msxml6 vcrun2017 fontsmooth=rgb win8 &&
-
-      winetricks -q cjkfonts
 
       $WINE ${src} /S
       regedit ${txtReg}
