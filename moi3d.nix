@@ -100,7 +100,7 @@ in
     # winetricks -q cjkfonts
     winAppInstall = ''
 
-      $WINE ${src} /S
+      $WINE ${src} /silent
       regedit ${txtReg}
     '';
     # cp -v -n "${defaultSettings}" "$config_dir/SumatraPDF-settings.txt"
