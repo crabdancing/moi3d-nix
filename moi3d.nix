@@ -86,10 +86,7 @@ in
 
     winAppInstall =
       ''
-
         $WINE ${src} /silent
-
-        $WINE ${src} /S
         regedit ${./use-theme-none.reg}
         regedit ${./wine-breeze-dark.reg}
         regedit ${txtReg}
