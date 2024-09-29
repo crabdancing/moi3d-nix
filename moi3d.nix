@@ -9,11 +9,19 @@
   copyDesktopItems,
   copyDesktopIcons, # This comes with erosanix. It's a handy way to generate desktop icons.
   unzip,
+  writeText,
+  setDPI ? null,
 }: let
   # This registry file sets winebrowser (xdg-open) as the default handler for
   # text files, instead of Wine's notepad.
   # Selecting "Settings -> Advanced Options" should then use xdg-open to open the SumatraPDF config file.
   txtReg = ./txt.reg;
+
+  setDPIReg = writeText "set-dpi-${toString setDPI}.reg" ''
+    Windows Registry Editor Version 5.00
+    [HKEY_LOCAL_MACHINE\System\CurrentControlSet\Hardware Profiles\Current\Software\Fonts]
+    "LogPixels"=dword:${toString setDPI}
+  '';
 in
   mkWindowsApp rec {
     inherit wine;
@@ -76,38 +84,20 @@ in
 
     nativeBuildInputs = [unzip copyDesktopItems copyDesktopIcons];
 
-    # This code will become part of the launcher script.
-    # It will execute if the application needs to be installed,
-    # which would happen either if the needed app layer doesn't exist,
-    # or for some reason the needed Windows layer is missing, which would
-    # invalidate the app layer.
-    # WINEPREFIX, WINEARCH, AND WINEDLLOVERRIDES are set
-    # and wine, winetricks, and cabextract are in the environment.
-    # d="$WINEPREFIX/drive_c/${pname}"
-    # config_dir="$HOME/.config/moi3d"
+    winAppInstall =
+      ''
 
-    # mkdir -p "$d"
-    # unzip ${src} -d "$d"
+        $WINE ${src} /silent
 
-    # mkdir -p "$config_dir"
+        $WINE ${src} /S
+        regedit ${./use-theme-none.reg}
+        regedit ${./wine-breeze-dark.reg}
+        regedit ${txtReg}
+      ''
+      + lib.optionalString (setDPI != null) ''
+        regedit ${setDPIReg}
+      '';
 
-    # WINEPREFIX=$HOME/.wineprefixes/mol3d sh winetricks -q corefonts cjkfonts msxml4 msxml6 vcrun2017 fontsmooth=rgb win8 &&
-    # We must install cjkfonts again then sometimes it doesn't work the first time!
-    # winetricks -q corefonts cjkfonts msxml4 msxml6 vcrun2017 fontsmooth=rgb win8 &&
-    # winetricks -q cjkfonts
-    winAppInstall = ''
-
-<<<<<<< HEAD
-      $WINE ${src} /silent
-=======
-      winetricks -q cjkfonts
-
-      $WINE ${src} /S
-      regedit ${./use-theme-none.reg}
-      regedit ${./wine-breeze-dark.reg}
->>>>>>> c1fcd2d (dark mode proper)
-      regedit ${txtReg}
-    '';
     # cp -v -n "${defaultSettings}" "$config_dir/SumatraPDF-settings.txt"
     # chmod ug+w "$config_dir/SumatraPDF-settings.txt"
 

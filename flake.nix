@@ -15,6 +15,7 @@
       pkgs = import "${nixpkgs}" {
         system = "x86_64-linux";
       };
+<<<<<<< HEAD
       mono = pkgs.fetchurl rec {
         version = "8.1.0";
         url = "https://dl.winehq.org/wine/wine-mono/${version}/wine-mono-${version}-x86.msi";
@@ -32,6 +33,20 @@
           ];
         };
       };
+=======
+      baseMoi3d = pkgs.callPackage ./moi3d.nix {
+        inherit (erosanix.lib.x86_64-linux) mkWindowsApp makeDesktopIcon copyDesktopIcons;
+        wine = pkgs.wineWowPackages.full;
+      };
+    in {
+      inherit baseMoi3d;
+      moi3d = baseMoi3d;
+      moi3dBigDPI = baseMoi3d.override {
+        setDPI = 90;
+      };
+
+      default = self.packages.x86_64-linux.moi3d;
+>>>>>>> 5b04b38 (bigdpi)
     };
 
     apps.x86_64-linux.moi3d = {
