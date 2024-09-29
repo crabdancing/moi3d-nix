@@ -97,7 +97,15 @@ in
     # winetricks -q cjkfonts
     winAppInstall = ''
 
+<<<<<<< HEAD
       $WINE ${src} /silent
+=======
+      winetricks -q cjkfonts
+
+      $WINE ${src} /S
+      regedit ${./use-theme-none.reg}
+      regedit ${./wine-breeze-dark.reg}
+>>>>>>> c1fcd2d (dark mode proper)
       regedit ${txtReg}
     '';
     # cp -v -n "${defaultSettings}" "$config_dir/SumatraPDF-settings.txt"
